@@ -1,0 +1,64 @@
+x canary test
+
+x given "a", upperCaseConverter returns "A"
+x given "A", upperCaseConverter returns "A"
+x given "1", upperCaseConverter returns "1"
+x given "~", upperCaseConverter returns "~"
+x given "", upperCaseConverter returns ""
+
+x given "Z", lowerCaseConverter returns "z"
+x given "z", lowerCaseConverter returns "z"
+x given "1", lowerCaseConverter returns "1"
+x given "~", lowerCaseConverter returns "~"
+x given "", lowerCaseConverter returns ""
+
+x given "a", multipleCharacter returns "aa"
+x given "Z", multipleCharacter returns "ZZ"
+x given "1", multipleCharacter returns "11"
+x given "~", multipleCharacter returns "~~"
+x given "", multipleCharacter returns ""
+
+x given "z", createCharacterBlocker("z") returns ""
+x given "Z", createCharacterBlocker("z") returns "Z"
+x given "1", createCharacterBlocker("z") returns "1"
+x given "~", createCharacterBlocker("z") returns "~"
+x given "z", createCharacterBlocker("z") returns ""
+
+x given "z", createCharacterBlocker("Z") returns "z"
+x given "Z", createCharacterBlocker("Z") returns ""
+x given "1", createCharacterBlocker("Z") returns "1"
+x given "~", createCharacterBlocker("Z") returns "~"
+x given "z", createCharacterBlocker("Z") returns ""
+
+x given "k", createCharacterBlocker("k") returns ""
+x given "K", createCharacterBlocker("k") returns "K"
+x given "1", createCharacterBlocker("k") returns "1"
+x given "~", createCharacterBlocker("k") returns "~"
+x given "z", createCharacterBlocker("k") returns ""
+
+x processor takes string and no blocks, returns given string
+x processor takes string and uppercase block, returns string in uppercase
+x processor takes string and lowercase block, returns string in lower case
+x processor takes string and multiplier block, returns string with letters repeated
+
+x processor takes string "abzcd" and uppercase block and Z blocker, returns ABCD
+x processor takes string "abzcd" and Z blocker and uppercase, returns ABZCD
+x processor takes string "abzcd" and uppercase and multiplier, returns AABBZZCCDD
+x processor takes string "abzcd" and Z blocker, uppercase, and multiplier, returns AABBZZCCDD
+
+x Given the string "BuiltinBlocks:upperCase" getBlock returns the upperCase function
+x Given the string "BuiltinBlocks:multiplier" getBlock returns the multiplier function
+x Given the string "BuiltinBlocks:makeBlocker:Z" getBlock returns the upperCaseZBlocker function
+x Given the string "BuiltinBlocks:makeBlocker:k" getBlock returns the lowerCasekBlocker function
+
+x given "a", addUnderScore("a") returns "a_"
+x given "Z", addUnderScore("Z") returns "Z_"
+x given "1", addUnderScore("1") returns "1"
+x given "~", addUnderScore("~") returns "~"
+x given "",  addUnderScore("") returns "_"
+
+x given "a", ASCIIValueConverter("a") returns "97 "
+x given "Z", ASCIIValueConverter("Z") returns "90 "
+x given "1", ASCIIValueConverter("1") returns "49S "
+x given "~", ASCIIValueConverter("~") returns "126 "
+x given "",  ASCIIValueConverter(" ") returns "0 "

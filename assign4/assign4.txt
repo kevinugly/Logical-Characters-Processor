@@ -1,0 +1,105 @@
+Assign4: Due 11:59PM November 20
+
+In this assignment we will design a logical characters processor. The processor will receive a series of characters as input and produce a series of characters as output. The processor may house any number of processing blocks. Not all blocks that are available may be used when creating a processor. Also, a block may be used more than once. The order in which the blocks are used may also vary.
+                                                            
+
+		...input... -> | block1 block2 block3 ... | -> ...output...
+                           Processor
+
+Let's discuss some examples of blocks and then revisit the processor.
+
+1. UpperCaseConverter Block
+	Given a character, this block will send out or return the character in uppercase.
+
+2. LowerCaseConverter Block
+	Given a character, this block will send out or return the character in lowercase.
+	
+3. Multiplier Block
+  Given a character, this block will send out or return two of the same character. For example, if it received 'a', it will produce 'aa'. If it receives '1', it will produce '11'.
+
+4. z-blocker Block
+  Given a character, if the character is a lowercase 'z', this block will not return or produce anything. If it is any other character, it will produce the given character as output. For example, 'a' will result in an output of 'a'.
+
+5. Z-blocker Block
+	This block will not return or produce an output if the character given is an uppercase 'Z'.
+	
+6. k-blocker Block
+   This block will not return or produce an output if the character given is lowercase 'k'.
+
+The program should allow end users to create other similar blocks they like.
+
+The end user should be able to create a processor using any series of blocks.
+
+For example, a user may create a processor with the following series of blocks:
+	UpperCaseConverter - z-blocker - LowerCaseConverter
+	
+After creating this processor, if a user were to send the following series of characters as input:
+
+	11abcdabcdabcdzzaazzabcd
+
+it will return the following output:
+
+	11abcdabcdabcdaaabcd
+
+In addition to designing a few sample blocks and the processor, we will create a console based driver program.
+	
+Design the program in such a way that:
+
+1. A user can specify the blocks available for use before the program starts. This should include pre-defined blocks and user created blocks.
+
+2. The user can specify, through a file, the blocks they'd like to use and the order or sequence in which they'd like to use them.
+
+Think through the overall design of the program first. Then start with one small, but interesting and valuable part, and evolve the design and code incrementally.
+
+After completing the assignment answer these questions:
+
+1. What did you learn in this assignment?
+
+	In this assignment, we gained a better understanding of abstract classes, Function as a return type, and learned how to implement parameterized testing. Before being introduced to the principles utilized in this project, weâ€™d often create classes that contained duplicate methods rather than creating a base class that contained the shared method. We found that by utilizing a base class, weâ€™re able to have low coupling where weâ€™re free to change many parts of our code without it leading to breakage, which is what would frequently happen prior to us taking this class. We were also introduced to Javaâ€™s reflection API, which was extremely useful for this assignment since we were required to change behavior during runtime (deciding what blocks to process the words with). Lastly, we learned a lot more about Javaâ€™s util package and the many different ways to use its implementation. This allowed us to write code that was a lot cleaner and less noisy.
+
+2. What design principles did you use? List each one of them, discuss what this principle is, and give example(s) of where specifically you used it in this assignment.
+
+	In this assignment, we used Single Responsibility Principle (SRP), with several interfaces (Block, BlockAccess, Processor, and ThirdPartyBlock) that contain the different types of functions that perform specific jobs according to their interface, and then test classes that handle and test the functions separately. Each Block functions, BlockAccess functions, Processor function and ThiryPartyBlock functions were put into their own interfaces. This is the first principle we made sure to keep in mind when starting our program.
+	
+	Learning from the last assignment, we created a base test interface so that we did not violate Donâ€™t Repeat Yourself (DRY). We created an abstract base test class that had a test method with the assert statements we would have to run with several different functions that all received one string type parameter and returned a string type, instead of having it rewritten with every functionâ€™s test class. At the beginning of the abstract test class, an abstract String function was declared, and in the assert statements from the test method, the abstract function is called for each statement. We made each individual test class implement the abstract base test class and its methods but had each test class override the abstract method by returning its own respective function. We also at first made a blocker function for each â€œz,â€ â€œZâ€ and â€œkâ€. In the end, we created a blocker function for any letter that would be a parameter.
+
+	By making sure to keep DRY, we were also able to adhere to the Open/Closed Principle (OCP) as a result. Rather than having each test class have its own set of assert statements, which wouldâ€™ve broken both DRY and OCP, we had a base test class that contained the assert statements that all test classes would have to run. The abstract base test class was open to extension, but not modification. 
+
+	The next principle we utilized was Keep it Simple, Stupid (KISS). After we wrote all of the code needed to make the program run, we went back and refactored to make sure that the language was as simple and readable as possible. We also took a look around our code and changed variable names that seemed generic to ones that perfectly explain what the variable is meant to be representing. We then made more minor changes that we believed would enhance the readability of our program.
+	
+	Keeping simplicity in our code goes along with the Single Level Abstraction Principle (SLAP). Before, we had some of our methods have imperative code and some with functional code. But to adhere to the SLAP, we changed all of our methods to functional style, which is preferred over imperative. We kept all of the methods to have the same level of abstraction so it can be easier to read and understand. 
+
+	The last design principle we use was Dependency inversion Principle (DIP). WIth DIP, abstractions should not depend on details. Details should depend on abstractions. For example, all of our methods are designed to all be independent from each other. And if a user were to add their own third party block into the project to be used, none of our pre existing code needs to be changed. The user can add as many third party blocks as they wanted without interrupting any of our blocks.
+
+	
+3. What design patterns did you use? List each one of them, discuss what this pattern is, and give example(s) of where specifically you used it in this assignment.
+
+	In this project, we also utilized the Composed Method Pattern, which states that we should divide long methods into smaller fragments that can be grouped together into their own separate methods. We did this when we created three different interfaces for Blocks, Processor, and BlockAccess. Rather than creating one long method where we define the blocks, retrieve the blocks, then create the processor, we separated them into their own methods where each task is handled separately. 
+
+	In our Processor interface, our process method has a varargs of functions as a parameter. Chain of Responsibility patterns can be seen here as we deal with an object-oriented linked list. Because in our main function, we gather line by line of an input file into a list of functions. In order for our process method from our Processor interface to be called we have to change our list of functions to an array list of functions and pass that as a parameter. Passing this array list will break it down for the process function to use from the varargs.
+
+	The Mediator Pattern is used to reduce communication complexity between classes by creating a mediator that handles the communication and prevents direct access. In our project, this is done with our Processor interface, which handles the processing of the blocks. Rather than having a processor that defines specific functions to be used, we took in an array of Functions as a parameter instead, where any time of block function can be utilized and be put into the processor. This decreases dependency, since if we wanted to add certain blocks into our processor, we wouldnâ€™t have to change the function itself, but rather we can add to the behavior at runtime.
+
+	In our BlockAccess interface, we used the Command Pattern when we wrapped method.invoke() into an object, input, where the user does not know what is to be invoked yet. By doing this, we can accommodate different requests such as using blocks that arenâ€™t already built in our Blocks interface. By materializing our command, we can pass it to other functions that may also find use of it. For example, our getBlockerBlock method calls the getBlock function, where input which contains the command, is passed into it and is then utilized in the same way.
+
+	In our tests, we made use of the Factory Method pattern by creating a base test class that has the abstract blockFunction, which will be overridden and defined by its derived test classes, and parameterized test function that takes in â€œspecificCaseArguments, which will also be defined by the derived test classes, as a method source. The arguments source is a Factory Method that generates a stream of arguments, where each argument contains the input string as well as the expected string. The arguments differ for and are defined by each derived test class but are invoked the same way. If we want to change what string we want to use as input only with some of our block tests, we would only have to change the arguments in the individual test classes, while leaving our base test class the same. 
+
+The Singleton design principle ensures a class has only one instance, and provides a global point of access to it. We have several interfaces that handle different parts of our block project. To access and test these methods, we created one base test class that had an abstract method that would be overridden by the methodâ€™s individual test classes. The function is the one instance that is called by all of the test classes, which contains the assert statements, for all subsequent calls. We were able to utilize the one instance by overriding it and returning the functions that are required for each test class.
+
+	Throughout our assignment, we also implemented the Decorator Pattern using Lambdas. The main objective of this pattern is to give us the ability to add behavior at runtime. It adds behavior to the object, while leaving the objectâ€™s interface untouched. This can be seen in our Process function, where we take in Functions as an argument, and then combine them to be applied to the input in sequential order. The user can create any type of block they want and then have it passed to the process in the UI, which will then be applied to any given input.
+
+	In our tests, we also used the Bridge Pattern, where the base block test interface acts as a bridge, and allows the functionality of the derived test classes to be independent of each other. The Bridge Pattern is often used when our goal is to decrease coupling as much as possible, and increase reusability. For example, each class will utilize a stream of source arguments. However, the derived class will define its own set of arguments to be used. This ensures that the concrete test classes are completely independent of each other.
+
+
+Total [100]: 98
+Program runs as expected [10]:
+All tests pass [10]:
+Test quality [10]:
+Code coverage [10]:
+Built in blocks [10]:
+Processor [10]:
+Code quality [10}
+Design quality [10]:
+Works for 3rd party block [10]:
+Response to questions [10]: -2
+Too many patterns being listed, but some of them are really not relevant.
